@@ -1,0 +1,19 @@
+# Build
+bin/
+obj/
+out/
+artifacts/
+
+# IDE
+.vs/
+.vscode/
+.idea/
+
+# User/temps
+*.user
+*.suo
+*.log
+*.tmp
+*.cache/
+*.local.json
+*.secrets.json
