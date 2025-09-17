@@ -36,4 +36,20 @@ public class AccountService : IAccountService
         
         return _repository.Create(account);
     }
+
+    public async Task<Account> UpdateAccount(int accountId, UpdateAccountDTO request)
+    {
+        var currentAccount = await _repository.GetById(accountId);
+
+        if (currentAccount == null)
+            return null;
+        
+        currentAccount.Mail = request.Mail;
+        currentAccount.HoursPlayed = request.HoursPlayed;
+        currentAccount.AdminStatus = request.AdminStatus;
+
+        _repository.Update(currentAccount);
+
+        return currentAccount;
+    }
 }

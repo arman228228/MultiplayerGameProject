@@ -8,6 +8,7 @@ artifacts/
 .vs/
 .vscode/
 .idea/
+.github/
 
 # User/temps
 *.user

@@ -1,28 +1,43 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
+using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 public class AccountRepository : IAccountRepository
 {
-    private static readonly List<Account> _accounts = new();
-    private static int _nextId = 1; // AUTO INCREMENT
+    private static AppDbContext _context;
+
+    public AccountRepository(AppDbContext context)
+    {
+        _context = context;
+    }
     
     public Task<Account?> GetById(int id)
     {
-        return Task.FromResult(_accounts.FirstOrDefault(p => p.Id == id));
+        return _context.Accounts.FirstOrDefaultAsync(p => p.Id == id);
     }
 
     public Task<List<Account>> GetAll()
     {
-        return Task.FromResult(_accounts);
+        return _context.Accounts.ToListAsync();
     }
 
-    public Task<Account> Create(Account account)
+    public async Task<Account> Create(Account account)
     {
-        account.Id = _nextId;
-        _accounts.Add(account);
-
-        _nextId++;
+        _context.Add(account);
+        await _context.SaveChangesAsync();
         
-        return Task.FromResult(account);
+        return account;
+    }
+
+    public void Update(Account account)
+    {
+        var currentAccount = _context.Accounts.FirstOrDefaultAsync(p => p.Id == account.Id);
+
+        if (currentAccount == null)
+            return;
+        
+        _context.Remove(currentAccount);
+        _context.Add(account);
     }
 }

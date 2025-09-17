@@ -8,4 +8,8 @@ public class Account
     public string Mail { get; set; }
     public string Password { get; set; }
     public DateTime CreatedAt { get; set; }
+
+    //
+    public int HoursPlayed { get; set; }
+    public bool AdminStatus { get; set; }
 }
