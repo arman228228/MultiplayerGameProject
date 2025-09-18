@@ -7,8 +7,9 @@ namespace Application.Interfaces;
 
 public interface IAccountService
 {
+    Task<Account?> Create(CreateAccountDTO request);
     Task<List<Account>> GetAll();
-    Task<Account?> GetAccountById(int id);
-    Task<Account> CreateAccount(CreateAccountDTO request);
-    Task<Account> UpdateAccount(int accountId, UpdateAccountDTO request);
+    Task<Account?> GetById(int id);
+    Task<bool> Update(int accountId, UpdateAccountDTO request);
+    Task<bool> Delete(int accountId);
 }

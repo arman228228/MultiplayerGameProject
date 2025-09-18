@@ -2,6 +2,8 @@
 using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
+namespace Presentation.Controllers;
+
 [ApiController]
 [Route("api/[controller]")]
 public class AccountController : ControllerBase
@@ -16,14 +18,18 @@ public class AccountController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(CreateAccountDTO dto)
     {
-        var account = await _accountService.CreateAccount(dto);
-        return Ok(account);
+        var account = await _accountService.Create(dto);
+
+        if (account == null)
+            return Conflict("Duplicate key nickname or email");
+        
+        return Created($"/api/accounts/{account.Id}", account);
     }
     
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
-        var account = await _accountService.GetAccountById(id);
+        var account = await _accountService.GetById(id);
 
         if (account == null)
             return NotFound($"Account with ID: {id} not found");
@@ -34,11 +40,33 @@ public class AccountController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var account = await _accountService.GetAll();
+        var accounts = await _accountService.GetAll();
 
-        if (account == null)
+        if (!accounts.Any())
             return NotFound($"Accounts not found");
         
-        return Ok(account);
+        return Ok(accounts);
+    }
+
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> Update(int id, UpdateAccountDTO request)
+    {
+        bool updatingResult = await _accountService.Update(id, request);
+
+        if (!updatingResult)
+            return NotFound($"Account not found");
+        
+        return Ok(updatingResult);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        bool deletionResult = await _accountService.Delete(id);
+
+        if (!deletionResult)
+            return NotFound($"Account not found");
+        
+        return Ok(deletionResult);
     }
 }

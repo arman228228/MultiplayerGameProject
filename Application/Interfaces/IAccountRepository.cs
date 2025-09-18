@@ -6,8 +6,11 @@ namespace Application.Interfaces;
 
 public interface IAccountRepository
 {
-    Task<Account?> GetById(int id);
-    Task<List<Account>> GetAll();
     Task<Account> Create(Account account);
-    void Update(Account account);
+    Task<Account?> GetById(int id);
+    Task<Account?> GetByNickname(string nickname);
+    Task<Account?> GetByMail(string mail);
+    Task<List<Account>> GetAll();
+    Task<bool> Update(Account account);
+    Task<bool> Delete(int id);
 }

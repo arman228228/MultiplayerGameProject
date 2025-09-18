@@ -15,8 +15,8 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Account>(m =>
         {
             m.HasKey(p => p.Id);
-            m.Property(p => p.Name).IsRequired().HasMaxLength(32);
-            m.HasIndex(p => p.Name).IsUnique();
+            m.Property(p => p.Nickname).IsRequired().HasMaxLength(32);
+            m.HasIndex(p => p.Nickname).IsUnique();
             m.HasIndex(p => p.Mail).IsUnique();
         });
     }

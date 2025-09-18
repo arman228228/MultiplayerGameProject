@@ -20,36 +20,47 @@ public class AccountService : IAccountService
         return _repository.GetAll();
     }
     
-    public Task<Account?> GetAccountById(int id)
+    public Task<Account?> GetById(int id)
     {
         return _repository.GetById(id);
     }
 
-    public Task<Account> CreateAccount(CreateAccountDTO request)
+    public async Task<Account?> Create(CreateAccountDTO request)
     {
+        var results = await Task.WhenAll(
+            _repository.GetByNickname(request.Nickname),
+            _repository.GetByMail(request.Mail)
+        );
+        
+        if (results[0] != null || results[1] != null)
+            return null;
+        
         var account = new Account
         {
-            Name = request.Name,
+            Nickname = request.Nickname,
             Mail = request.Mail,
             Password = request.Password
         };
         
-        return _repository.Create(account);
+        return await _repository.Create(account);
     }
 
-    public async Task<Account> UpdateAccount(int accountId, UpdateAccountDTO request)
+    public async Task<bool> Update(int accountId, UpdateAccountDTO request)
     {
-        var currentAccount = await _repository.GetById(accountId);
+        var account = await _repository.GetById(accountId);
 
-        if (currentAccount == null)
-            return null;
+        if (account == null)
+            return false;
         
-        currentAccount.Mail = request.Mail;
-        currentAccount.HoursPlayed = request.HoursPlayed;
-        currentAccount.AdminStatus = request.AdminStatus;
+        account.Mail = request.Mail;
+        account.HoursPlayed = request.HoursPlayed;
+        account.AdminStatus = request.AdminStatus;
 
-        _repository.Update(currentAccount);
+        return await _repository.Update(account);
+    }
 
-        return currentAccount;
+    public async Task<bool> Delete(int accountId)
+    {
+        return await _repository.Delete(accountId);
     }
 }
