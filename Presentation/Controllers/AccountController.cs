@@ -1,5 +1,5 @@
-﻿using Application.DTOs;
-using Application.Interfaces;
+﻿using Application.DTOs.Accounts;
+using Application.Interfaces.Accounts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers;
@@ -16,14 +16,14 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateAccountDTO dto)
+    public async Task<IActionResult> Create(CreateAccountDto dto)
     {
         var account = await _accountService.Create(dto);
 
         if (account == null)
             return Conflict("Duplicate key nickname or email");
         
-        return Created($"/api/accounts/{account.Id}", account);
+        return Created($"/api/account/{account.Id}", account);
     }
     
     [HttpGet("{id}")]
@@ -49,7 +49,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpPatch("{id}")]
-    public async Task<IActionResult> Update(int id, UpdateAccountDTO request)
+    public async Task<IActionResult> Update(int id, UpdateAccountDto request)
     {
         bool updatingResult = await _accountService.Update(id, request);
 

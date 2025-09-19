@@ -1,10 +1,9 @@
-﻿using Application.DTOs;
-using Application.Interfaces;
-using Domain.Entities;
+﻿using Application.DTOs.Accounts;
+using Application.Interfaces.Accounts;
+using Application.Mappers.Accounts;
+using Domain.Entities.Accounts;
 
 namespace Application.Services;
-
-// Business logic
 
 public class AccountService : IAccountService
 {
@@ -13,6 +12,19 @@ public class AccountService : IAccountService
     public AccountService(IAccountRepository repository)
     {
         _repository = repository;
+    }
+    
+    public async Task<Account?> Create(CreateAccountDto request)
+    {
+        var results = await Task.WhenAll(
+            _repository.GetByNickname(request.Nickname),
+            _repository.GetByMail(request.Mail)
+        );
+        
+        if (results[0] != null || results[1] != null)
+            return null;
+        
+        return await _repository.Create(request.ToEntity());
     }
 
     public Task<List<Account>> GetAll()
@@ -25,36 +37,14 @@ public class AccountService : IAccountService
         return _repository.GetById(id);
     }
 
-    public async Task<Account?> Create(CreateAccountDTO request)
-    {
-        var results = await Task.WhenAll(
-            _repository.GetByNickname(request.Nickname),
-            _repository.GetByMail(request.Mail)
-        );
-        
-        if (results[0] != null || results[1] != null)
-            return null;
-        
-        var account = new Account
-        {
-            Nickname = request.Nickname,
-            Mail = request.Mail,
-            Password = request.Password
-        };
-        
-        return await _repository.Create(account);
-    }
-
-    public async Task<bool> Update(int accountId, UpdateAccountDTO request)
+    public async Task<bool> Update(int accountId, UpdateAccountDto request)
     {
         var account = await _repository.GetById(accountId);
 
         if (account == null)
             return false;
-        
-        account.Mail = request.Mail;
-        account.HoursPlayed = request.HoursPlayed;
-        account.AdminStatus = request.AdminStatus;
+
+        account.MapFromDto(request);
 
         return await _repository.Update(account);
     }

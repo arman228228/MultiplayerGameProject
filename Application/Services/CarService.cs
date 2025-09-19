@@ -1,0 +1,55 @@
+﻿using Application.DTOs.Cars;
+using Application.Interfaces.Cars;
+using Application.Mappers;
+using Domain.Entities.Cars;
+
+namespace Application.Services;
+
+public class CarService : ICarService
+{
+    private readonly ICarRepository _repository;
+
+    public CarService(ICarRepository repository)
+    {
+        _repository = repository;
+    }
+    
+    public async Task<Car?> Create(CreateCarDto request)
+    {
+        var result = await _repository.GetByAccountAndModel(request.AccountId, request.Model);
+    
+        if (result != null)
+            return null;
+    
+        return await _repository.Create(request.ToEntity());
+    }
+    
+    public Task<List<Car>> GetAll()
+    {
+        return _repository.GetAll();
+    }
+    
+    public Task<Car?> GetById(int id)
+    {
+        return _repository.GetById(id);
+    }
+    
+    public async Task<bool> Update(int carId, UpdateCarDto request)
+    {
+        var car = await _repository.GetById(carId);
+        if (car == null) return false;
+
+        car.MapFromDto(request);
+        return await _repository.Update(car);
+    }
+
+    public async Task<bool> Delete(int id)
+    {
+        var car = await _repository.GetById(id);
+
+        if (car == null)
+            return false;
+        
+        return await _repository.Delete(id);
+    }
+}

@@ -1,4 +1,6 @@
-using Application.Interfaces;
+using Application.Interfaces.AccountQuests;
+using Application.Interfaces.Accounts;
+using Application.Interfaces.Quests;
 using Application.Services;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
@@ -11,6 +13,12 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(connecti
 builder.Services.AddControllers();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+
+builder.Services.AddScoped<IQuestService, QuestService>();
+builder.Services.AddScoped<IQuestRepository, QuestRepository>();
+
+builder.Services.AddScoped<IAccountQuestService, AccountQuestService>();
+builder.Services.AddScoped<IAccountQuestRepository, AccountQuestRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

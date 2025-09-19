@@ -1,5 +1,6 @@
-﻿using Application.Interfaces;
-using Domain.Entities;
+﻿using Application.Interfaces.Accounts;
+using Application.Mappers.Accounts;
+using Domain.Entities.Accounts;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,19 +15,26 @@ public class AccountRepository : IAccountRepository
         _context = context;
     }
     
+    public async Task<Account> Create(Account account)
+    {
+        _context.Add(account);
+        await _context.SaveChangesAsync();
+        return account;
+    }
+    
     public Task<Account?> GetById(int id)
     {
-        return _context.Accounts.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+        return _context.Accounts.AsNoTracking().FirstOrDefaultAsync(a => a.Id == id);
     }
 
     public Task<Account?> GetByNickname(string nickname)
     {
-        return _context.Accounts.AsNoTracking().FirstOrDefaultAsync(p => p.Nickname == nickname);
+        return _context.Accounts.AsNoTracking().FirstOrDefaultAsync(a => a.Nickname == nickname);
     }
     
     public Task<Account?> GetByMail(string mail)
     {
-        return _context.Accounts.AsNoTracking().FirstOrDefaultAsync(p => p.Mail == mail);
+        return _context.Accounts.AsNoTracking().FirstOrDefaultAsync(a => a.Mail == mail);
     }
 
     public Task<List<Account>> GetAll()
@@ -34,30 +42,21 @@ public class AccountRepository : IAccountRepository
         return _context.Accounts.AsNoTracking().ToListAsync();
     }
 
-    public async Task<Account> Create(Account account)
-    {
-        _context.Add(account);
-        await _context.SaveChangesAsync();
-        return account;
-    }
-
     public async Task<bool> Update(Account account)
     {
-        var currentAccount = await _context.Accounts.FirstOrDefaultAsync(p => p.Id == account.Id);
+        var currentAccount = await _context.Accounts.FirstOrDefaultAsync(a => a.Id == account.Id);
 
         if (currentAccount == null)
             return false;
 
-        currentAccount.Mail = account.Mail;
-        currentAccount.HoursPlayed = account.HoursPlayed;
-        currentAccount.AdminStatus = account.AdminStatus;
+        currentAccount.Map(account);
 
         return await _context.SaveChangesAsync() > 0;
     }
 
     public async Task<bool> Delete(int id)
     {
-        var account = await _context.Accounts.FirstOrDefaultAsync(p => p.Id == id);
+        var account = await _context.Accounts.FirstOrDefaultAsync(a => a.Id == id);
 
         if (account == null)
             return false;

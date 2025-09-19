@@ -1,6 +1,6 @@
-﻿using Domain.Entities;
+﻿using Domain.Entities.Accounts;
 
-namespace Application.Interfaces;
+namespace Application.Interfaces.Accounts;
 
 // Data access
 
