@@ -1,5 +1,4 @@
-﻿using Domain.Entities;
-using Domain.Entities.AccountQuests;
+﻿using Domain.Entities.AccountQuests;
 
 namespace Application.Interfaces.AccountQuests;
 

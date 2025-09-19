@@ -1,5 +1,4 @@
 ﻿using Application.DTOs.AccountQuests;
-using Domain.Entities;
 using Domain.Entities.AccountQuests;
 
 namespace Application.Interfaces.AccountQuests;

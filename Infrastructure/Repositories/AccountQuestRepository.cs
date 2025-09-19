@@ -1,5 +1,4 @@
 ﻿using Application.Interfaces.AccountQuests;
-using Domain.Entities;
 using Domain.Entities.AccountQuests;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -24,10 +23,10 @@ public class AccountQuestRepository : IAccountQuestRepository
 
     public async Task<AccountQuest?> GetById(int id)
     {
-        var accountQuest = _context.AccountQuests
+        var accountQuest = await _context.AccountQuests
             .Include(aq => aq.Account)
             .Include(aq => aq.Quest)
-            .FirstOrDefault(aq => aq.Id == id);
+            .FirstOrDefaultAsync(aq => aq.Id == id);
         
         if (accountQuest == null)
             return null;
@@ -37,10 +36,10 @@ public class AccountQuestRepository : IAccountQuestRepository
 
     public async Task<AccountQuest?> GetByAccountAndQuest(int accountId, int questId)
     {
-        var accountQuest = _context.AccountQuests
+        var accountQuest = await _context.AccountQuests
             .Include(aq => aq.Account)
             .Include(aq => aq.Quest)
-            .FirstOrDefault(aq => aq.AccountId == accountId && aq.QuestId == questId);
+            .FirstOrDefaultAsync(aq => aq.AccountId == accountId && aq.QuestId == questId);
         
         if (accountQuest == null)
             return null;

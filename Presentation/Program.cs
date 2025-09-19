@@ -1,5 +1,6 @@
 using Application.Interfaces.AccountQuests;
 using Application.Interfaces.Accounts;
+using Application.Interfaces.Cars;
 using Application.Interfaces.Quests;
 using Application.Services;
 using Infrastructure.Data;
@@ -19,6 +20,9 @@ builder.Services.AddScoped<IQuestRepository, QuestRepository>();
 
 builder.Services.AddScoped<IAccountQuestService, AccountQuestService>();
 builder.Services.AddScoped<IAccountQuestRepository, AccountQuestRepository>();
+
+builder.Services.AddScoped<ICarService, CarService>();
+builder.Services.AddScoped<ICarRepository, CarRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
