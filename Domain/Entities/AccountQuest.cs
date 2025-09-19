@@ -28,9 +28,4 @@ public class AccountQuest
         QuestId = questId;
         IsCompleted = false;
     }
-
-    public void Complete()
-    {
-        IsCompleted = true;
-    }
 }

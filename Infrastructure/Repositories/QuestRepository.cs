@@ -40,9 +40,7 @@ public class QuestRepository : IQuestRepository
     public async Task<bool> Update(Quest quest)
     {
         var questFromDb = await _context.Quests.FirstOrDefaultAsync(q => q.Id == quest.Id);
-
-        if (questFromDb == null)
-            return false;
+        if (questFromDb == null) return false;
 
         questFromDb.Map(quest);
 
@@ -52,9 +50,7 @@ public class QuestRepository : IQuestRepository
     public async Task<bool> Delete(int questId, int accountId)
     {
         var questFromDb = await _context.Quests.FirstOrDefaultAsync(q => q.Id == questId && q.AccountId == accountId);
-
-        if (questFromDb == null)
-            return false;
+        if (questFromDb == null) return false;
         
         _context.Quests.Remove(questFromDb);
         return await _context.SaveChangesAsync() > 0;

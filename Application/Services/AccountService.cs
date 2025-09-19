@@ -21,8 +21,7 @@ public class AccountService : IAccountService
             _repository.GetByMail(request.Mail)
         );
         
-        if (results[0] != null || results[1] != null)
-            return null;
+        if (results[0] != null || results[1] != null) return null;
         
         return await _repository.Create(request.ToEntity());
     }
@@ -40,9 +39,7 @@ public class AccountService : IAccountService
     public async Task<bool> Update(int accountId, UpdateAccountDto request)
     {
         var account = await _repository.GetById(accountId);
-
-        if (account == null)
-            return false;
+        if (account == null) return false;
 
         account.MapFromDto(request);
 

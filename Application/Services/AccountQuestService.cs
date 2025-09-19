@@ -48,9 +48,7 @@ public class AccountQuestService : IAccountQuestService
     public async Task<bool> Update(int id, UpdateAccountQuestDto request)
     {
         var accountQuest = await _accountQuestRepository.GetById(id);
-
-        if (accountQuest == null)
-            return false;
+        if (accountQuest == null) return false;
 
         accountQuest.IsCompleted = request.IsCompleted;
 

@@ -45,9 +45,7 @@ public class AccountRepository : IAccountRepository
     public async Task<bool> Update(Account account)
     {
         var currentAccount = await _context.Accounts.FirstOrDefaultAsync(a => a.Id == account.Id);
-
-        if (currentAccount == null)
-            return false;
+        if (currentAccount == null) return false;
 
         currentAccount.Map(account);
 
@@ -57,9 +55,7 @@ public class AccountRepository : IAccountRepository
     public async Task<bool> Delete(int id)
     {
         var account = await _context.Accounts.FirstOrDefaultAsync(a => a.Id == id);
-
-        if (account == null)
-            return false;
+        if (account == null) return false;
         
         _context.Accounts.Remove(account);
         return await _context.SaveChangesAsync() > 0;

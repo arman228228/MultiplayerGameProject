@@ -19,9 +19,7 @@ public class AccountQuestController : ControllerBase
     public async Task<IActionResult> Create(CreateAccountQuestDto dto)
     {
         var accountQuest = await _accountQuestService.Create(dto);
-
-        if (accountQuest == null)
-            return Conflict("Duplicate key");
+        if (accountQuest == null) return Conflict("Error key");
         
         return Created($"/api/accountQuest/{accountQuest.Id}", accountQuest);
     }
@@ -30,9 +28,7 @@ public class AccountQuestController : ControllerBase
     public async Task<IActionResult> GetById(int id)
     {
         var accountQuest = await _accountQuestService.GetById(id);
-
-        if (accountQuest == null)
-            return NotFound($"AccountQuest with ID: {id} not found");
+        if (accountQuest == null) return NotFound($"AccountQuest with ID: {id} not found");
         
         return Ok(accountQuest);
     }
@@ -41,9 +37,7 @@ public class AccountQuestController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var accounts = await _accountQuestService.GetAll();
-
-        if (!accounts.Any())
-            return NotFound($"AccountsQuests not found");
+        if (!accounts.Any()) return NotFound($"AccountsQuests not found");
         
         return Ok(accounts);
     }
@@ -52,9 +46,7 @@ public class AccountQuestController : ControllerBase
     public async Task<IActionResult> Update(int id, UpdateAccountQuestDto request)
     {
         bool updatingResult = await _accountQuestService.Update(id, request);
-
-        if (!updatingResult)
-            return NotFound($"AccountQuest not found");
+        if (!updatingResult) return NotFound($"AccountQuest not found");
         
         return Ok(updatingResult);
     }
@@ -63,9 +55,7 @@ public class AccountQuestController : ControllerBase
     public async Task<IActionResult> Delete(int id)
     {
         bool deletionResult = await _accountQuestService.Delete(id);
-
-        if (!deletionResult)
-            return NotFound($"AccountQuest not found");
+        if (!deletionResult) return NotFound($"AccountQuest not found");
         
         return Ok(deletionResult);
     }

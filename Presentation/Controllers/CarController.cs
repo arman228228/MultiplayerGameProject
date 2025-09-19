@@ -20,9 +20,7 @@ public class CarController : ControllerBase
     public async Task<IActionResult> Create(CreateCarDto dto)
     {
         var car = await _carService.Create(dto);
-
-        if (car == null)
-            return Conflict("Duplicate key");
+        if (car == null) return Conflict("Error key");
         
         return Created($"/api/car/{car.Id}", car);
     }
@@ -31,9 +29,7 @@ public class CarController : ControllerBase
     public async Task<IActionResult> GetById(int id)
     {
         var car = await _carService.GetById(id);
-
-        if (car == null)
-            return NotFound($"Car with ID: {id} not found");
+        if (car == null) return NotFound($"Car with ID: {id} not found");
         
         return Ok(car);
     }
@@ -42,9 +38,7 @@ public class CarController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var cars = await _carService.GetAll();
-
-        if (!cars.Any())
-            return NotFound($"Cars not found");
+        if (!cars.Any()) return NotFound($"Cars not found");
         
         return Ok(cars);
     }
@@ -53,9 +47,7 @@ public class CarController : ControllerBase
     public async Task<IActionResult> Update(int id, UpdateCarDto request)
     {
         bool updatingResult = await _carService.Update(id, request);
-
-        if (!updatingResult)
-            return NotFound($"Car not found");
+        if (!updatingResult) return NotFound($"Car not found");
         
         return Ok(updatingResult);
     }
@@ -64,9 +56,7 @@ public class CarController : ControllerBase
     public async Task<IActionResult> Delete(int id)
     {
         bool deletionResult = await _carService.Delete(id);
-
-        if (!deletionResult)
-            return NotFound($"Car not found");
+        if (!deletionResult) return NotFound($"Car not found");
         
         return Ok(deletionResult);
     }

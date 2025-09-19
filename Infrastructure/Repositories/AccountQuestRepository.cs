@@ -28,8 +28,7 @@ public class AccountQuestRepository : IAccountQuestRepository
             .Include(aq => aq.Quest)
             .FirstOrDefaultAsync(aq => aq.Id == id);
         
-        if (accountQuest == null)
-            return null;
+        if (accountQuest == null) return null;
         
         return accountQuest;
     }
@@ -41,8 +40,7 @@ public class AccountQuestRepository : IAccountQuestRepository
             .Include(aq => aq.Quest)
             .FirstOrDefaultAsync(aq => aq.AccountId == accountId && aq.QuestId == questId);
         
-        if (accountQuest == null)
-            return null;
+        if (accountQuest == null) return null;
         
         return accountQuest;
     }
