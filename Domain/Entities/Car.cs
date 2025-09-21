@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Domain.Entities.Accounts;
+﻿using Domain.Entities.Accounts;
 
 namespace Domain.Entities.Cars;
 
@@ -7,14 +6,12 @@ namespace Domain.Entities.Cars;
 public class Car
 {
     public int Id { get; private set; }
+    public string Model { get; private set; }
+    public int AccountId { get; private set; }
+    public Account Account { get; private set; }
     
-    [Required]
-    [StringLength(64, MinimumLength = 3)]
-    public string Model { get; set; }
-
-    [Required]
-    public int AccountId { get; set; }
-    public Account Account { get; set; }
+    private const int MinModelLength = 3;
+    private const int MaxModelLength = 64;
     
     private Car() {}
 
@@ -22,5 +19,16 @@ public class Car
     {
         Model = model;
         AccountId = accountId;
+    }
+
+    // Mapper
+    public void UpdateModel(string model)
+    {
+        if (string.IsNullOrWhiteSpace(model) || model.Length < MinModelLength || model.Length > MaxModelLength)
+        {
+            throw new ArgumentException($"Model length is invalid. Correct lengths: from {MinModelLength} to {MaxModelLength}", nameof(model));
+        }
+        
+        Model = model;
     }
 }

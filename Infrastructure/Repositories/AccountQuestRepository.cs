@@ -62,7 +62,7 @@ public class AccountQuestRepository : IAccountQuestRepository
 
     public async Task<bool> Delete(int id)
     {
-        var accountQuest = _context.AccountQuests.FirstOrDefault(aq => aq.Id == id);
+        var accountQuest = await _context.AccountQuests.FirstOrDefaultAsync(aq => aq.Id == id);
         if (accountQuest == null) return false;
 
         _context.AccountQuests.Remove(accountQuest);

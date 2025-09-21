@@ -28,9 +28,9 @@ public class CarRepository : ICarRepository
         return _context.Cars.AsNoTracking().ToListAsync();
     }
 
-    public Task<Car?> GetById(int questId)
+    public Task<Car?> GetById(int carId)
     {
-        return _context.Cars.AsNoTracking().FirstOrDefaultAsync(q => q.Id == questId);
+        return _context.Cars.FirstOrDefaultAsync(c => c.Id == carId);
     }
 
     public Task<Car?> GetByAccountAndModel(int accountId, string model)

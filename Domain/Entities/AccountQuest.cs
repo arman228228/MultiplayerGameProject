@@ -1,24 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Domain.Entities.Accounts;
+﻿using Domain.Entities.Accounts;
 using Domain.Entities.Quests;
 
 namespace Domain.Entities.AccountQuests;
 
 public class AccountQuest
 {
-    public int Id { get; set; }
-    
-    [Required]
-    public int AccountId { get; set; }
-    [Required]
-    public Account Account { get; set; }
-    
-    [Required]
-    public int QuestId { get; set; }
-    [Required]
-    public Quest Quest { get; set; }
-    
-    public bool IsCompleted { get; set; }
+    public int Id { get; private set; }
+    public int AccountId { get; private set; }
+    public Account Account { get; private set; }
+    public int QuestId { get; private set; }
+    public Quest Quest { get; private set; }
+    public bool IsCompleted { get; private set; }
     
     private AccountQuest() { }
 
@@ -28,4 +20,7 @@ public class AccountQuest
         QuestId = questId;
         IsCompleted = false;
     }
+
+    // Mapper
+    public void UpdateCompleteStatus(bool status) => IsCompleted = status;
 }

@@ -50,7 +50,7 @@ public class AccountQuestService : IAccountQuestService
         var accountQuest = await _accountQuestRepository.GetById(id);
         if (accountQuest == null) return false;
 
-        accountQuest.IsCompleted = request.IsCompleted;
+        accountQuest.UpdateCompleteStatus(request.IsCompleted);
 
         return await _accountQuestRepository.Update(accountQuest);
     }

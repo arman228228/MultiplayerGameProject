@@ -10,17 +10,14 @@ public static class CarMappingExtensions
     {
         return new Car(dto.Model, dto.AccountId);
     }
-    
 
     public static void Map(this Car target, Car source)
     {
-        target.Model = source.Model;
-        target.AccountId = source.AccountId;
-        target.Account = source.Account;
+        target.UpdateModel(source.Model);
     }
 
     public static void MapFromDto(this Car target, UpdateCarDto dto)
     {
-        target.Model = dto.Model;
+        target.UpdateModel(dto.Model);
     }
 }

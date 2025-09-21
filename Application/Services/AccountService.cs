@@ -14,14 +14,12 @@ public class AccountService : IAccountService
         _repository = repository;
     }
     
-    public async Task<Account?> Create(CreateAccountDto request)
+    public async Task<Account?> Create(CreateAccountRequestDto request)
     {
-        var results = await Task.WhenAll(
-            _repository.GetByNickname(request.Nickname),
-            _repository.GetByMail(request.Mail)
-        );
+        var existsByNickname = await _repository.GetByNickname(request.Nickname);
+        var existsByMail = await _repository.GetByMail(request.Mail);
         
-        if (results[0] != null || results[1] != null) return null;
+        if (existsByNickname != null || existsByMail != null) return null;
         
         return await _repository.Create(request.ToEntity());
     }

@@ -36,10 +36,10 @@ public class AccountQuestController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var accounts = await _accountQuestService.GetAll();
-        if (!accounts.Any()) return NotFound($"AccountsQuests not found");
+        var accountQuests = await _accountQuestService.GetAll();
+        if (!accountQuests.Any()) return NotFound($"AccountsQuests not found");
         
-        return Ok(accounts);
+        return Ok(accountQuests);
     }
     
     [HttpPatch("{id}")]

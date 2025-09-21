@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Accounts;
 using Application.Interfaces.Accounts;
+using Application.Mappers.Accounts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers;
@@ -16,12 +17,14 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateAccountDto dto)
+    public async Task<IActionResult> Create(CreateAccountRequestDto requestDto)
     {
-        var account = await _accountService.Create(dto);
+        var account = await _accountService.Create(requestDto);
         if (account == null) return Conflict("Error key with nickname or email");
+
+        var response = account.ToResponseDto();
         
-        return Created($"/api/account/{account.Id}", account);
+        return CreatedAtAction(nameof(GetById), new {id = account.Id}, response);
     }
     
     [HttpGet("{id}")]
@@ -30,7 +33,9 @@ public class AccountController : ControllerBase
         var account = await _accountService.GetById(id);
         if (account == null) return NotFound($"Account with ID: {id} not found");
         
-        return Ok(account);
+        var response = account.ToResponseDto();
+        
+        return Ok(response);
     }
 
     [HttpGet]
@@ -38,8 +43,10 @@ public class AccountController : ControllerBase
     {
         var accounts = await _accountService.GetAll();
         if (!accounts.Any()) return NotFound($"Accounts not found");
+
+        var responses = accounts.Select(a => a.ToResponseDto()).ToList();
         
-        return Ok(accounts);
+        return Ok(responses);
     }
 
     [HttpPatch("{id}")]

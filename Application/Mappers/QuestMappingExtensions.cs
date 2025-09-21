@@ -7,12 +7,12 @@ public static class QuestMappingExtensions
 {
     public static void Map(this Quest quest, Quest secondQuest)
     {
-        quest.IsCompleted = secondQuest.IsCompleted;
+        quest.UpdateCompleteStatus(secondQuest.IsCompleted);
     }
     
     public static void MapFromDto(this Quest quest, UpdateQuestDto dto)
     {
-        quest.IsCompleted = dto.IsCompleted;
+        quest.UpdateCompleteStatus(dto.IsCompleted);
     }
     
     public static Quest ToEntity(this CreateQuestDto dto)
